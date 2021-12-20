@@ -9,12 +9,12 @@ def move(ver_value_list):
     so = bpy.context.active_object
 
     # so.data.vertices[0] = Vector((1,1,1))
-    print([v.co for v in so.data.vertices])
+    # print([v.co for v in so.data.vertices])
 
     # print("the value passed",ver_value_list, type(ver_value_list))
     for v in so.data.vertices:
         # vertex value will be like [[1.0,2.0,0.0], [1.0,0.0,0.0], [] , [0.0,0.0,0.0]] ## it is a plane so 4 vertices this time
-        print(v.index,v)
+        # print(v.index,v)
         if ver_value_list[v.index] == []: 
             # when i don't want to change certine index leave it empty 
             # ---> t will be in it's current point no chnages
@@ -30,13 +30,33 @@ def move(ver_value_list):
     output_dir = "/home/pavithra/Pictures/learning/blender/opencv_live_movement_checking/"
     
     # set te image resolution
-    w, h = 100,100
+    w, h = 500,500
     # image = bpy.types.images
     # scene=bpy.context.scene
     # scene.render.image_settings.file_format='JPEG'
     # image.save_render(os.path.join(output_dir, "img.jpg") ,scene)
 
-    bpy.context.scene.render.image_settings.file_format='JPEG'
+    # change the sample render size in render properties.
+    bpy.context.scene.eevee.taa_render_samples = 32
+    bpy.context.scene.render.film_transparent = True
+    # change the render engine to cycle.
+    bpy.context.scene.render.engine = "BLENDER_EEVEE"
+
+    # Disable soft shadow at shadows at render properties.
+    bpy.context.scene.eevee.use_soft_shadows = False
+
+    bpy.context.scene.eevee.sss_samples = 4
+
+    bpy.context.scene.eevee.volumetric_samples = 32
+
+    bpy.context.scene.render.simplify_gpencil_antialiasing = False
+
+    # Disable the shadow in the visibility Display at Object properties.
+    bpy.context.object.display.show_shadows = False
+
+    bpy.context.scene.render.image_settings.file_format='PNG'
+    bpy.context.scene.render.image_settings.color_mode ='RGBA'
+    bpy.context.scene.render.film_transparent = True
     bpy.context.scene.render.resolution_x = w #perhaps set resolution in code
     bpy.context.scene.render.resolution_y = h
     bpy.context.scene.render.resolution_percentage = 100
