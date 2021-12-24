@@ -31,10 +31,6 @@ def move(ver_value_list):
     
     # set te image resolution
     w, h = 500,500
-    # image = bpy.types.images
-    # scene=bpy.context.scene
-    # scene.render.image_settings.file_format='JPEG'
-    # image.save_render(os.path.join(output_dir, "img.jpg") ,scene)
 
     # change the sample render size in render properties.
     bpy.context.scene.eevee.taa_render_samples = 32
@@ -44,22 +40,27 @@ def move(ver_value_list):
 
     # Disable soft shadow at shadows at render properties.
     bpy.context.scene.eevee.use_soft_shadows = False
-
     bpy.context.scene.eevee.sss_samples = 4
-
     bpy.context.scene.eevee.volumetric_samples = 32
-
     bpy.context.scene.render.simplify_gpencil_antialiasing = False
-
     # Disable the shadow in the visibility Display at Object properties.
     bpy.context.object.display.show_shadows = False
 
-    bpy.context.scene.render.image_settings.file_format='PNG'
-    bpy.context.scene.render.image_settings.color_mode ='RGBA'
+    # setting for transperacy.
+    #bpy.context.scene.render.image_settings.file_format='PNG'
+    #bpy.context.scene.render.image_settings.color_mode ='RGBA'
     bpy.context.scene.render.film_transparent = True
+
     bpy.context.scene.render.resolution_x = w #perhaps set resolution in code
     bpy.context.scene.render.resolution_y = h
     bpy.context.scene.render.resolution_percentage = 100
+
+    # Set the camera view settings.
+    bpy.data.objects['Camera'].data.shift_x = 0.24 # move camera to left-right position.
+    bpy.data.objects['Camera'].data.shift_y = 0.22 # move camera up-bottom position.
+    bpy.data.objects['Camera'].data.sensor_width = 40 # camera focus.
+    
+    # save the image.
     bpy.context.scene.render.filepath = os.path.join(output_dir, "img.jpg")
     bpy.ops.render.render(write_still=True)
     print("image saved")
@@ -97,3 +98,21 @@ def start_server():
 
 if __name__ == "__main__":
     start_server()
+
+
+
+
+w,h = 500, 500
+output_dir = "/home/pavithra/Pictures/learning/blender/opencv_live_movement_checking/"
+bpy.context.scene.render.resolution_x = w #perhaps set resolution in code
+bpy.context.scene.render.resolution_y = h
+bpy.context.scene.render.resolution_percentage = 100
+
+bpy.context.object["Cameras"].data.shift_x = 0.24
+bpy.context.object.data.shift_y = 0.22
+bpy.context.object.data.sensor_width = 40
+    
+ # save the image.
+bpy.context.scene.render.filepath = os.path.join(output_dir, "img.jpg")
+bpy.ops.render.render(write_still=True)
+print("image saved")
